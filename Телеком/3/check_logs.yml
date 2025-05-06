@@ -1,0 +1,33 @@
+---
+- name: Check script output inside container
+  hosts: all
+  become: false
+  tasks:
+    - name: Wait for container to complete (up to 60s)
+      shell: |
+        for i in {1..60}; do
+          status=$(docker inspect -f '{{.State.Running}}' http-checker-container)
+          [ "$status" = "false" ] && break
+          sleep 1
+        done
+
+    - name: Get container exit code
+      shell: docker inspect -f '{{.State.ExitCode}}' http-checker-container
+      register: exit_code
+
+    - name: Show container logs
+      shell: docker logs http-checker-container
+      register: container_logs
+
+    - name: Print exit code
+      debug:
+        msg: "Exit code: {{ exit_code.stdout }}"
+
+    - name: Print container logs
+      debug:
+        msg: "{{ container_logs.stdout }}"
+
+    - name: Fail if exit code is not 0
+      fail:
+        msg: "Script failed with exit code {{ exit_code.stdout }}"
+      when: exit_code.stdout != "0"

@@ -1,0 +1,25 @@
+Основные линукс команды для юзера:
+pwd
+cd
+ls
+ls-l
+mkdir
+rmdir
+rm
+cp
+mv
+cat
+les
+nano
+vim
+top
+ps
+kill
+df -h
+free -h
+whoami
+adduser
+deluser
+grep
+find
+man

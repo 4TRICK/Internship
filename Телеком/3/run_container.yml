@@ -1,0 +1,21 @@
+---
+- name: Build and run container with script
+  hosts: all
+  become: false
+  vars:
+    project_path: "../2/Project"
+  tasks:
+    - name: Copy project files
+      copy:
+        src: "{{ project_path }}/"
+        dest: "./app"
+        mode: preserve
+        remote_src: no
+
+    - name: Build Docker image
+      command: docker build -t http-checker ./app
+      args:
+        chdir: "./"
+
+    - name: Run Docker container
+      command: docker run --name http-checker-container -d http-checker

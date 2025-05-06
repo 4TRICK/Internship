@@ -1,0 +1,376 @@
+[2025-05-06 09:28:58,924] INFO: Starting HTTP status checks...
+[2025-05-06 09:28:58,924] DEBUG: Checking status code: 200
+[2025-05-06 09:28:59,703] INFO: Success: Status 200
+Response body: 200 OK
+[2025-05-06 09:28:59,704] DEBUG: Checking status code: 301
+[2025-05-06 09:29:00,490] INFO: Success: Status 200
+Response body: 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>httpstat.us</title>
+    <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="content">
+        <header>
+            <h1 id="title">httpstat.us</h1>
+        </header>
+        <div id="view">
+            
+
+<p>This is a super simple service for generating different HTTP codes.</p>
+<p>It's useful for testing how your own scripts deal with varying responses.</p>
+<p>
+    Just add the status code you want to the URL, like this: <a href="/200" target="_blank">httpstat.us/200</a>.
+</p>
+<p>We'll return a response like this:</p>
+<code>
+    HTTP/1.1 {status code} {status description}
+    Content-Type: text/plain or application/json
+    Content-Length: {something}
+    {any custom response headers}
+
+    {status code} {status description}
+    {list of any custom response headers we added}
+</code>
+
+<p>
+    To get a JSON response back, you need to ensure that the Accept header contains 'application/json'. Then we'll JSON encode the response and send the Content-Type header accordingly.
+</p>
+
+<p>
+    To get a random response back, use the <code class="inline">random/{range}</code> endpoint,
+    for example
+    <a href="/random/200,201,500-504" target="_blank">httpstat.us/random/200,201,500-504</a>.
+    You can duplicate ranges in order to increase their probability.
+</p>
+
+<p>
+    If you want a delay on the response add a query string or provide a header of <code>X-HttpStatus-Sleep</code> for the sleep duration (the time in ms, max 5 minutes*), like this:
+    <a href="/200?sleep=5000" target="_blank">httpstat.us/200?sleep=5000</a>.
+    <br />
+    <em>*When using the hosted instance the timeout is actually 230 seconds, which is the max timeout allowed by an Azure App Service (see <a href="https://social.msdn.microsoft.com/Forums/en-US/05f254a6-9b34-4eb2-a5f7-2a82fb40135f/time-out-after-230-seconds?forum=windowsazurewebsitespreview" target="_blank">this thread post</a>). If you host it yourself expect the limits to be different.</em>
+</p>
+
+<p>
+    If you want to return additional headers to the client, you can send them in the request with the <code>X-HttpStatus-Response-</code> prefix. A header of <code>X-HttpStatus-Response-Foo: Bar</code> will append the <code>Foo: Bar</code> header in the response.
+</p>
+
+<p>Here are all the codes we support (and any special notes):</p>
+<dl>
+        <dt><a href="/100" target="_blank">100</a></dt>
+        <dd>
+Continue        </dd>
+        <dt><a href="/101" target="_blank">101</a></dt>
+        <dd>
+Switching Protocols        </dd>
+        <dt><a href="/102" target="_blank">102</a></dt>
+        <dd>
+Processing        </dd>
+        <dt><a href="/103" target="_blank">103</a></dt>
+        <dd>
+Early Hints        </dd>
+        <dt><a href="/200" target="_blank">200</a></dt>
+        <dd>
+OK        </dd>
+        <dt><a href="/201" target="_blank">201</a></dt>
+        <dd>
+Created        </dd>
+        <dt><a href="/202" target="_blank">202</a></dt>
+        <dd>
+Accepted        </dd>
+        <dt><a href="/203" target="_blank">203</a></dt>
+        <dd>
+Non-Authoritative Information        </dd>
+        <dt><a href="/204" target="_blank">204</a></dt>
+        <dd>
+No Content        </dd>
+        <dt><a href="/205" target="_blank">205</a></dt>
+        <dd>
+Reset Content        </dd>
+        <dt><a href="/206" target="_blank">206</a></dt>
+        <dd>
+Partial Content        </dd>
+        <dt><a href="/207" target="_blank">207</a></dt>
+        <dd>
+                <a href="https://tools.ietf.org/html/rfc4918" target="_blank" title="Multi-Status">Multi-Status</a>
+        </dd>
+        <dt><a href="/208" target="_blank">208</a></dt>
+        <dd>
+Already Reported        </dd>
+        <dt><a href="/226" target="_blank">226</a></dt>
+        <dd>
+                <a href="https://tools.ietf.org/html/rfc3229#section-10.4.1" target="_blank" title="IM Used">IM Used</a>
+        </dd>
+        <dt><a href="/300" target="_blank">300</a></dt>
+        <dd>
+Multiple Choices        </dd>
+        <dt><a href="/301" target="_blank">301</a></dt>
+        <dd>
+Moved Permanently        </dd>
+        <dt><a href="/302" target="_blank">302</a></dt>
+        <dd>
+Found        </dd>
+        <dt><a href="/303" target="_blank">303</a></dt>
+        <dd>
+See Other        </dd>
+        <dt><a href="/304" target="_blank">304</a></dt>
+        <dd>
+Not Modified        </dd>
+        <dt><a href="/305" target="_blank">305</a></dt>
+        <dd>
+Use Proxy        </dd>
+        <dt><a href="/306" target="_blank">306</a></dt>
+        <dd>
+Switch Proxy        </dd>
+        <dt><a href="/307" target="_blank">307</a></dt>
+        <dd>
+Temporary Redirect        </dd>
+        <dt><a href="/308" target="_blank">308</a></dt>
+        <dd>
+Permanent Redirect        </dd>
+        <dt><a href="/400" target="_blank">400</a></dt>
+        <dd>
+Bad Request        </dd>
+        <dt><a href="/401" target="_blank">401</a></dt>
+        <dd>
+Unauthorized        </dd>
+        <dt><a href="/402" target="_blank">402</a></dt>
+        <dd>
+Payment Required        </dd>
+        <dt><a href="/403" target="_blank">403</a></dt>
+        <dd>
+Forbidden        </dd>
+        <dt><a href="/404" target="_blank">404</a></dt>
+        <dd>
+Not Found        </dd>
+        <dt><a href="/405" target="_blank">405</a></dt>
+        <dd>
+Method Not Allowed        </dd>
+        <dt><a href="/406" target="_blank">406</a></dt>
+        <dd>
+Not Acceptable        </dd>
+        <dt><a href="/407" target="_blank">407</a></dt>
+        <dd>
+Proxy Authentication Required        </dd>
+        <dt><a href="/408" target="_blank">408</a></dt>
+        <dd>
+Request Timeout        </dd>
+        <dt><a href="/409" target="_blank">409</a></dt>
+        <dd>
+Conflict        </dd>
+        <dt><a href="/410" target="_blank">410</a></dt>
+        <dd>
+Gone        </dd>
+        <dt><a href="/411" target="_blank">411</a></dt>
+        <dd>
+Length Required        </dd>
+        <dt><a href="/412" target="_blank">412</a></dt>
+        <dd>
+Precondition Failed        </dd>
+        <dt><a href="/413" target="_blank">413</a></dt>
+        <dd>
+Request Entity Too Large        </dd>
+        <dt><a href="/414" target="_blank">414</a></dt>
+        <dd>
+Request-URI Too Long        </dd>
+        <dt><a href="/415" target="_blank">415</a></dt>
+        <dd>
+Unsupported Media Type        </dd>
+        <dt><a href="/416" target="_blank">416</a></dt>
+        <dd>
+Requested Range Not Satisfiable        </dd>
+        <dt><a href="/417" target="_blank">417</a></dt>
+        <dd>
+Expectation Failed        </dd>
+        <dt><a href="/418" target="_blank">418</a></dt>
+        <dd>
+                <a href="https://www.ietf.org/rfc/rfc2324.txt" target="_blank" title="I&#x27;m a teapot">I&#x27;m a teapot</a>
+        </dd>
+        <dt><a href="/421" target="_blank">421</a></dt>
+        <dd>
+Misdirected Request        </dd>
+        <dt><a href="/422" target="_blank">422</a></dt>
+        <dd>
+Unprocessable Entity        </dd>
+        <dt><a href="/423" target="_blank">423</a></dt>
+        <dd>
+Locked        </dd>
+        <dt><a href="/424" target="_blank">424</a></dt>
+        <dd>
+Failed Dependency        </dd>
+        <dt><a href="/425" target="_blank">425</a></dt>
+        <dd>
+Too Early        </dd>
+        <dt><a href="/426" target="_blank">426</a></dt>
+        <dd>
+Upgrade Required        </dd>
+        <dt><a href="/428" target="_blank">428</a></dt>
+        <dd>
+Precondition Required        </dd>
+        <dt><a href="/429" target="_blank">429</a></dt>
+        <dd>
+Too Many Requests        </dd>
+        <dt><a href="/431" target="_blank">431</a></dt>
+        <dd>
+Request Header Fields Too Large        </dd>
+        <dt><a href="/451" target="_blank">451</a></dt>
+        <dd>
+Unavailable For Legal Reasons        </dd>
+        <dt><a href="/500" target="_blank">500</a></dt>
+        <dd>
+Internal Server Error        </dd>
+        <dt><a href="/501" target="_blank">501</a></dt>
+        <dd>
+Not Implemented        </dd>
+        <dt><a href="/502" target="_blank">502</a></dt>
+        <dd>
+Bad Gateway        </dd>
+        <dt><a href="/503" target="_blank">503</a></dt>
+        <dd>
+Service Unavailable        </dd>
+        <dt><a href="/504" target="_blank">504</a></dt>
+        <dd>
+Gateway Timeout        </dd>
+        <dt><a href="/505" target="_blank">505</a></dt>
+        <dd>
+HTTP Version Not Supported        </dd>
+        <dt><a href="/506" target="_blank">506</a></dt>
+        <dd>
+Variant Also Negotiates        </dd>
+        <dt><a href="/507" target="_blank">507</a></dt>
+        <dd>
+Insufficient Storage        </dd>
+        <dt><a href="/508" target="_blank">508</a></dt>
+        <dd>
+                <a href="https://tools.ietf.org/html/rfc5842" target="_blank" title="Loop Detected">Loop Detected</a>
+        </dd>
+        <dt><a href="/510" target="_blank">510</a></dt>
+        <dd>
+                <a href="https://tools.ietf.org/html/rfc2774" target="_blank" title="Not Extended">Not Extended</a>
+        </dd>
+        <dt><a href="/511" target="_blank">511</a></dt>
+        <dd>
+Network Authentication Required        </dd>
+        <dt><a href="/419" target="_blank">419</a></dt>
+        <dd>
+CSRF Token Missing or Expired (non-standard status code)        </dd>
+        <dt><a href="/420" target="_blank">420</a></dt>
+        <dd>
+Enhance Your Calm (non-standard status code)        </dd>
+        <dt><a href="/440" target="_blank">440</a></dt>
+        <dd>
+Login Time-out (non-standard status code)        </dd>
+        <dt><a href="/444" target="_blank">444</a></dt>
+        <dd>
+No Response (non-standard status code)        </dd>
+        <dt><a href="/449" target="_blank">449</a></dt>
+        <dd>
+Retry With (non-standard status code)        </dd>
+        <dt><a href="/450" target="_blank">450</a></dt>
+        <dd>
+Blocked by Windows Parental Controls (non-standard status code)        </dd>
+        <dt><a href="/460" target="_blank">460</a></dt>
+        <dd>
+Client closed the connection with AWS Elastic Load Balancer (non-standard status code)        </dd>
+        <dt><a href="/463" target="_blank">463</a></dt>
+        <dd>
+The load balancer received an X-Forwarded-For request header with more than 30 IP addresses (non-standard status code)        </dd>
+        <dt><a href="/494" target="_blank">494</a></dt>
+        <dd>
+Request header too large (non-standard status code)        </dd>
+        <dt><a href="/495" target="_blank">495</a></dt>
+        <dd>
+SSL Certificate Error (non-standard status code)        </dd>
+        <dt><a href="/496" target="_blank">496</a></dt>
+        <dd>
+SSL Certificate Required (non-standard status code)        </dd>
+        <dt><a href="/497" target="_blank">497</a></dt>
+        <dd>
+HTTP Request Sent to HTTPS Port (non-standard status code)        </dd>
+        <dt><a href="/498" target="_blank">498</a></dt>
+        <dd>
+Invalid Token (Esri) (non-standard status code)        </dd>
+        <dt><a href="/499" target="_blank">499</a></dt>
+        <dd>
+Client Closed Request (non-standard status code)        </dd>
+        <dt><a href="/520" target="_blank">520</a></dt>
+        <dd>
+Web Server Returned an Unknown Error (non-standard status code)        </dd>
+        <dt><a href="/521" target="_blank">521</a></dt>
+        <dd>
+Web Server Is Down (non-standard status code)        </dd>
+        <dt><a href="/522" target="_blank">522</a></dt>
+        <dd>
+Connection Timed out (non-standard status code)        </dd>
+        <dt><a href="/523" target="_blank">523</a></dt>
+        <dd>
+Origin Is Unreachable (non-standard status code)        </dd>
+        <dt><a href="/524" target="_blank">524</a></dt>
+        <dd>
+A Timeout Occurred (non-standard status code)        </dd>
+        <dt><a href="/525" target="_blank">525</a></dt>
+        <dd>
+SSL Handshake Failed (non-standard status code)        </dd>
+        <dt><a href="/526" target="_blank">526</a></dt>
+        <dd>
+Invalid SSL Certificate (non-standard status code)        </dd>
+        <dt><a href="/527" target="_blank">527</a></dt>
+        <dd>
+Railgun Error (non-standard status code)        </dd>
+        <dt><a href="/530" target="_blank">530</a></dt>
+        <dd>
+Origin DNS Error (non-standard status code)        </dd>
+        <dt><a href="/561" target="_blank">561</a></dt>
+        <dd>
+Unauthorized (AWS Elastic Load Balancer) (non-standard status code)        </dd>
+</dl>
+<p>If you need to enable <a href="https://developer.mozilla.org/docs/Web/HTTP/CORS" target="_blank" rel="noopener">CORS</a>, all endpoints have been configured to allow all origins, headers, and HTTP methods.</p>
+
+<p>If you send any other three digit number that's not in that list, we'll return it too. Or, <a href="https://github.com/aaronpowell/httpstatus">send us a pull request</a> to add full support for a new code.</p>
+<p>Enjoy!</p>
+        </div>
+        <footer>
+            Created by
+            <a href="https://www.aaron-powell.com">Aaron Powell</a>
+            and
+            <a href="https://tath.am">Tatham Oddie</a>
+            , hosted on an
+            <a href="https://azure.microsoft.com/en-us/services/app-service/">Azure App Service</a>,
+            open sourced on
+            <a href="https://github.com/aaronpowell/httpstatus" title="GitHub">GitHub</a>.
+            <br>
+
+            <strong>We don't capture or store any data about the requests you make.</strong>
+            <p>
+                Build Info: <a href="https://github.com/aaronpowell/httpstatus/commit/155dc50c6959df1db12cc0e07da3f2e0035a1426" target="_blank">Commit - 155dc50</a>
+                <br />
+                Version: Branch.main.Sha.155dc50c6959df1db12cc0e07da3f2e0035a1426
+            </p>
+        </footer>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-9207152-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </div>
+</body>
+</html>
+
+[2025-05-06 09:29:00,493] DEBUG: Checking status code: 404
+[2025-05-06 09:29:01,121] ERROR: Client Error: Status 404
+Response body: 404 Not Found
+[2025-05-06 09:29:01,121] ERROR: Error checking code 404: HTTP Client Error: 404
+[2025-05-06 09:29:01,122] DEBUG: Checking status code: 500
+[2025-05-06 09:29:01,745] CRITICAL: Server Error: Status 500
+Response body: 500 Internal Server Error
+[2025-05-06 09:29:01,746] ERROR: Error checking code 500: HTTP Server Error: 500
+[2025-05-06 09:29:01,747] DEBUG: Checking status code: 102
+[2025-05-06 09:29:07,226] CRITICAL: Request failed: HTTPSConnectionPool(host='httpstat.us', port=443): Read timed out. (read timeout=5)
+[2025-05-06 09:29:07,227] ERROR: Error checking code 102: Network error: HTTPSConnectionPool(host='httpstat.us', port=443): Read timed out. (read timeout=5)
+[2025-05-06 09:29:07,227] DEBUG: Checking status code: 999
+[2025-05-06 09:29:07,993] CRITICAL: Simulated CRITICAL error for testing purposes
+[2025-05-06 09:29:07,993] ERROR: Error checking code 999: Manual critical error triggered
+[2025-05-06 09:29:07,994] INFO: All checks completed. Logs saved to logs/http_check_20250506_092858.log

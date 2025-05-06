@@ -1,0 +1,2 @@
+grep -i "error" /var/log/syslog | head -n 5 
+#cat /var/log/syslog | grep -i "error" | head -n 5
