@@ -41,7 +41,7 @@ python .\http_check.py
 -docker run --name checker http-checker
 -docker rm checker 
 ```
-
+---
 ##🔹 Раздел 3: Автоматизация с Ansible
 ### Задачи:
 ```bash
