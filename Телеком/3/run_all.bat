@@ -2,6 +2,7 @@
 title Ansible Autoinstaller and Runner
 chcp 65001 >nul
 
+:: Проверка наличия WSL
 echo [INFO] Проверка наличия WSL...
 wsl --version >nul 2>&1
 if %errorlevel% neq 0 (
@@ -12,6 +13,7 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
+:: Проверка и установка Ubuntu в WSL
 echo [INFO] Установка Ubuntu (если нужно)...
 wsl -l -v | findstr -i "Ubuntu" >nul
 if %errorlevel% neq 0 (
@@ -21,17 +23,31 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
-echo [INFO] Установка Ansible и Docker в WSL...
+:: Установка зависимостей и Docker в WSL
+echo [INFO] Установка Ansible, Docker и Python3 в WSL...
 wsl bash -c "sudo apt update && sudo apt install -y ansible docker.io python3-pip"
 
+:: Запуск и проверка Docker в WSL
+echo [INFO] Проверка работы Docker...
+wsl bash -c "sudo systemctl enable --now docker"
+wsl bash -c "docker --version"
+
+:: Добавление текущего пользователя в группу docker
 echo [INFO] Добавление текущего пользователя в группу docker...
 wsl bash -c "sudo usermod -aG docker $(whoami)"
 
-echo [INFO] Копирование необходимых файлов (если нужно)...
-REM Здесь предполагается, что ты уже поместил все в папку 3
+:: Проверка наличия директории с проектом
+echo [INFO] Проверка наличия директории с проектом в разделе 3...
+set PROJECT_DIR=%~dp0
+if not exist "%PROJECT_DIR%Internship\3" (
+    echo [ERROR] Директория с проектом не найдена. Убедитесь, что вы находитесь в разделе 3.
+    pause
+    exit /b
+)
 
+:: Запуск Ansible Playbook
 echo [INFO] Запуск Ansible Playbook...
-wsl bash -c "cd ~/ && cd $(pwd | sed 's|\\|/|g' | sed 's/C:/mnt/c/') && ansible-playbook 3/site.yml -i 3/inventory.ini"
+wsl bash -c "cd /mnt/c/%PROJECT_DIR:~2%Internship/3 && ansible-playbook site.yml -i inventory.ini"
 
-echo [INFO] Готово.
+echo [INFO] Готово. Все настройки завершены!
 pause
