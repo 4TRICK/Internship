@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 ansible>=2.9
+=======
+ansible>=2.9
+>>>>>>> a3dae4be9614be0317785ed61660d8d1af6621d0
 docker>=4.0.0

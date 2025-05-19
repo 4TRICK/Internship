@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 - name: Install Docker and run http_check container
   hosts: all
@@ -6,4 +7,14 @@
 
   roles:
     - role: docker_install
+=======
+---
+- name: Install Docker and run http_check container
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: docker_install
+>>>>>>> a3dae4be9614be0317785ed61660d8d1af6621d0
     - role: run_container

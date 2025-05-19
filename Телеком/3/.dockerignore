@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 logs/
 .git/
 __pycache__/
+=======
+logs/
+.git/
+__pycache__/
+>>>>>>> a3dae4be9614be0317785ed61660d8d1af6621d0
 *.pyc
