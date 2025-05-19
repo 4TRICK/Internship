@@ -1,0 +1,9 @@
+---
+- name: Install Docker and run http_check container
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: docker_install
+    - role: run_container
