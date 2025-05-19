@@ -55,8 +55,11 @@ python .\http_check.py
 ```
 ## Запуск:
 ```bash
-./sh run_all.sh(Для Linux)
-.\run_all.bat (Для Windows)
+chmod +x 3/deploy.sh
+cd 3
+sudo ./deploy.sh (запускает уже готовую инфраструктуру Ansible)
+или 
+sudo ./deploy_hhtpcheck.sh (создает ВСЮ структуру Ansible c нуля)
 ```
 
 🔗 Ссылки
