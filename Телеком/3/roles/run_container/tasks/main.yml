@@ -1,0 +1,83 @@
+---
+- name: Create working directory
+  file:
+    path: /tmp/http_check
+    state: directory
+
+- name: Copy script files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/http_check/
+  loop:
+    - files/http_check.py
+    - files/requirements.txt
+
+- name: Template Dockerfile
+  template:
+    src: templates/Dockerfile.j2
+    dest: /tmp/http_check/Dockerfile
+
+- name: Copy .dockerignore
+  copy:
+    src: ../../../.dockerignore
+    dest: /tmp/http_check/.dockerignore
+
+- name: Build Docker image
+  community.docker.docker_image:
+    name: http-checker
+    source: build
+    build:
+      path: /tmp/http_check
+      dockerfile: Dockerfile
+    force_source: yes
+
+- name: Run container
+  community.docker.docker_container:
+    name: http-check-container
+    image: http-checker
+    state: started
+    detach: true
+    volumes:
+      - "/tmp/http_check/logs:/app/logs"
+
+- name: Wait for container to finish
+  command: docker wait http-check-container
+  register: container_exit_code
+  until: container_exit_code.stdout != ""
+  retries: 10
+  delay: 1
+
+- name: Check container exit code
+  assert:
+    that:
+      - container_exit_code.stdout == "0"
+    fail_msg: "Container failed with exit code {{ container_exit_code.stdout }}"
+    success_msg: "Container completed successfully"
+
+- name: Get container logs
+  command: docker logs http-check-container
+  register: container_logs
+  changed_when: false
+
+- name: Display container logs
+  debug:
+    var: container_logs.stdout_lines
+
+- name: Show log files
+  find:
+    paths: /tmp/http_check/logs
+    patterns: "*.log"
+  register: log_files
+
+- name: Display log file contents
+  command: cat "{{ item.path }}"
+  loop: "{{ log_files.files }}"
+  register: log_contents
+  changed_when: false
+
+- name: Show log contents
+  debug:
+    var: item.stdout_lines
+  loop: "{{ log_contents.results }}"
+  loop_control:
+    label: "{{ item.item.path }}"

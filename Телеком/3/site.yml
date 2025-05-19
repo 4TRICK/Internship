@@ -1,4 +1,0 @@
----
-- import_playbook install_docker.yml
-- import_playbook run_container.yml
-- import_playbook check_logs.yml
